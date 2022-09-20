@@ -6,32 +6,44 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class StatementPrinter {
-    Console console;
+    public static final String SEPARATOR = " || ";
+
+    private final Console console;
 
     public StatementPrinter(Console console) {
         this.console = console;
     }
     public void printAll(List<Transaction> allTransactions) {
-        console.println("Date || Amount || Balance");
-        printTransactions(allTransactions);
+        printHeader();
+        printTransactionsInReverse(allTransactions);
     }
 
-    private void printTransactions(List<Transaction> allTransactions) {
-        List<String> linesWithBalance = createLinesWithBalance(allTransactions);
-        Collections.reverse(linesWithBalance);
-        linesWithBalance.forEach(line -> console.println(line));
+    private void printHeader() {
+        console.println(formatLine("Date", "Amount", "Balance"));
+    }
+
+    private void printTransactionsInReverse(List<Transaction> allTransactions) {
+        createLinesWithBalance(allTransactions).stream()
+                .collect(Collectors.collectingAndThen(Collectors.toList(),
+                        l -> { Collections.reverse(l); return l; }))
+                .forEach(console::println);
     }
 
     private static List<String> createLinesWithBalance(List<Transaction> allTransactions) {
         AtomicInteger rollingBalance = new AtomicInteger(0);
         return allTransactions.stream().map(transaction ->
-                formatTransactionLine(transaction, rollingBalance.addAndGet(transaction.getAmount())))
+                        formatTransaction(transaction,
+                                rollingBalance.addAndGet(transaction.getAmount())))
                 .collect(Collectors.toList());
     }
 
-    private static String formatTransactionLine(Transaction transaction, int rollingBalance) {
-        return transaction.getDate()
-                + " || " + transaction.getAmount()
-                + " || " + rollingBalance;
+    private static String formatTransaction(Transaction transaction, int rollingBalance) {
+        return formatLine(transaction.getDate(),
+                String.valueOf(transaction.getAmount()),
+                String.valueOf(rollingBalance));
+    }
+
+    private static String formatLine(String date, String amount, String rollingBalance) {
+        return date + SEPARATOR + amount + SEPARATOR + rollingBalance;
     }
 }
