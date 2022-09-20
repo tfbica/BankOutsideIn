@@ -1,7 +1,10 @@
 package com.bankoutsidein;
 
-public interface Console {
+public class Console {
 
-    void println(String line);
+    public void println(String line){
+        throw new UnsupportedOperationException();
+
+    }
 
 }
