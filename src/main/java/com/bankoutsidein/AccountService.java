@@ -1,10 +1,16 @@
 package com.bankoutsidein;
 
-public class AccountService {
-    TransactionRepository transactionRepository;
+import java.util.List;
 
-    public AccountService(TransactionRepository transactionRepository) {
+public class AccountService {
+    private final TransactionRepository transactionRepository;
+
+    private final StatementPrinter statementPrinter;
+
+    public AccountService(TransactionRepository transactionRepository,
+                          StatementPrinter statementPrinter) {
         this.transactionRepository = transactionRepository;
+        this.statementPrinter = statementPrinter;
     }
 
     public void deposit(int amount) {
@@ -17,6 +23,9 @@ public class AccountService {
     }
 
     public void printStatement() {
-        throw new UnsupportedOperationException();
+
+        List<Transaction> transactions = transactionRepository.getTransactions();
+        statementPrinter.printAll(transactions);
+
     }
 }

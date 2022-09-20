@@ -11,13 +11,15 @@ import static org.mockito.Mockito.inOrder;
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceFinalShould {
 
-    TransactionRepository transactionRepository = new TransactionRepository();
+    ClockService clockService = new ClockService();
+    TransactionRepository transactionRepository = new TransactionRepository(clockService);
+    StatementPrinter statementPrinter = new StatementPrinter();
     AccountService accountService;
     Console console;
     @Test
     void print_statement_for_transactions() {
 
-        accountService = new AccountService(transactionRepository);
+        accountService = new AccountService(transactionRepository, statementPrinter);
         accountService.deposit(1000);
         accountService.deposit(2000);
         accountService.withdraw(-500);
