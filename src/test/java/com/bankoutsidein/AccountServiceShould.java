@@ -1,7 +1,5 @@
 package com.bankoutsidein;
 
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,25 +20,33 @@ class AccountServiceShould {
 
     @Mock private StatementPrinter statementPrinter;
 
+    @Mock private ClockService clockService;
+
     @BeforeEach
     public void initialise() {
-        accountService = new AccountService(transactionRepository, statementPrinter);
+        accountService = new AccountService(transactionRepository, statementPrinter, clockService);
     }
 
     @Test
     void deposit() {
         int amount = 100;
+        String expectedDate = "10/01/2012";
+        when(clockService.getCurrentDate()).thenReturn(expectedDate);
+
         accountService.deposit(amount);
 
-        verify(transactionRepository).addDeposit(amount);
+        verify(transactionRepository).add(new Transaction(expectedDate, amount));
     }
 
     @Test
     void withdraw() {
         int amount = 500;
+        String expectedDate = "10/01/2012";
+        when(clockService.getCurrentDate()).thenReturn(expectedDate);
+
         accountService.withdraw(amount);
 
-        verify(transactionRepository).addWithdrawal(amount);
+        verify(transactionRepository).add(new Transaction(expectedDate, -amount));
     }
 
     @Test

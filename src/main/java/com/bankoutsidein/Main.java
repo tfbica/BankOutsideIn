@@ -8,9 +8,9 @@ public class Main {
         Console console = new Console();
 
         StatementPrinter statementPrinter = new StatementPrinter(console);
-        TransactionRepository transactionRepository = new TransactionRepository(clockService);
+        TransactionRepository transactionRepository = new TransactionRepository();
         AccountService accountService =
-                new AccountService(transactionRepository, statementPrinter);
+                new AccountService(transactionRepository, statementPrinter, clockService);
 
         accountService.deposit(1000);
         accountService.deposit(2000);

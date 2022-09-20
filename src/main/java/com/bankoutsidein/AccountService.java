@@ -7,19 +7,23 @@ public class AccountService {
 
     private final StatementPrinter statementPrinter;
 
+    private final ClockService clockService;
+
     public AccountService(TransactionRepository transactionRepository,
-                          StatementPrinter statementPrinter) {
+                          StatementPrinter statementPrinter,
+                          ClockService clockService) {
         this.transactionRepository = transactionRepository;
         this.statementPrinter = statementPrinter;
+        this.clockService = clockService;
     }
 
     public void deposit(int amount) {
-        transactionRepository.addDeposit(amount);
+        transactionRepository.add(new Transaction(clockService.getCurrentDate(), amount));
 
     }
 
     public void withdraw(int amount) {
-        transactionRepository.addWithdrawal(amount);
+        transactionRepository.add(new Transaction(clockService.getCurrentDate(), -amount));
     }
 
     public void printStatement() {

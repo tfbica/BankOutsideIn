@@ -3,7 +3,6 @@ package com.bankoutsidein;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,11 +13,9 @@ class TransactionRepositoryShould {
 
     private TransactionRepository transactionRepository;
 
-    @Mock ClockService clockService;
-
     @BeforeEach
     void initialise() {
-        this.transactionRepository = new TransactionRepository(clockService);
+        this.transactionRepository = new TransactionRepository();
     }
 
     @Test
@@ -27,10 +24,9 @@ class TransactionRepositoryShould {
         // arrange
         int amount = 200;
         String expectedDate = "13/01/2012";
-        when(clockService.getCurrentDate()).thenReturn(expectedDate);
 
         // act
-        transactionRepository.addDeposit(amount);
+        transactionRepository.add(new Transaction(expectedDate, amount));
 
         // assert
         assertEquals(1, transactionRepository.getTransactions().size());
@@ -45,10 +41,9 @@ class TransactionRepositoryShould {
         // arrange
         int amount = 100;
         String expectedDate = "14/01/2012";
-        when(clockService.getCurrentDate()).thenReturn(expectedDate);
 
         // act
-        transactionRepository.addWithdrawal(amount);
+        transactionRepository.add(new Transaction(expectedDate, -amount));
 
         // assert
         assertEquals(1, transactionRepository.getTransactions().size());

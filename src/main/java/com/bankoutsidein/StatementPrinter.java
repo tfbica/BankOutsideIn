@@ -22,9 +22,11 @@ public class StatementPrinter {
     private static List<String> createLinesWithBalance(List<Transaction> allTransactions) {
         List<String> linesWithBalance = new ArrayList<>();
         int rollingBalance = 0;
-        for (Transaction t : allTransactions) {
-            rollingBalance += t.getAmount();
-            linesWithBalance.add(t.getDate() + " || " + t.getAmount() + " || " + rollingBalance);
+        for (Transaction transaction : allTransactions) {
+            rollingBalance += transaction.getAmount();
+            linesWithBalance.add(transaction.getDate()
+                    + " || " + transaction.getAmount()
+                    + " || " + rollingBalance);
         }
         return linesWithBalance;
     }

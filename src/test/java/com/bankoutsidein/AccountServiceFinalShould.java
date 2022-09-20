@@ -22,15 +22,17 @@ public class AccountServiceFinalShould {
     @BeforeEach
     void initialise() {
         StatementPrinter statementPrinter = new StatementPrinter(console);
-        TransactionRepository transactionRepository = new TransactionRepository(clockService);
-        accountService = new AccountService(transactionRepository, statementPrinter);
+        TransactionRepository transactionRepository = new TransactionRepository();
+        accountService = new AccountService(transactionRepository, statementPrinter, clockService);
     }
 
     @Test
     void print_statement_for_transactions() {
 
-        when(clockService.getCurrentDate()).thenReturn("10/01/2012",
-                "13/01/2012", "14/01/2012");
+        when(clockService.getCurrentDate()).thenReturn(
+                "10/01/2012",
+                "13/01/2012",
+                "14/01/2012");
 
         accountService.deposit(1000);
         accountService.deposit(2000);
