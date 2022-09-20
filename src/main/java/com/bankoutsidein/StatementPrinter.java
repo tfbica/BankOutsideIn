@@ -11,18 +11,21 @@ public class StatementPrinter {
         this.console = console;
     }
     public void printAll(List<Transaction> allTransactions) {
-        List<String> temp = new ArrayList<>();
+        List<String> linesWithBalance = createLinesWithBalance(allTransactions);
+        Collections.reverse(linesWithBalance);
+        console.println("Date || Amount || Balance");
+        for (String line : linesWithBalance) {
+            console.println(line);
+        }
+    }
+
+    private static List<String> createLinesWithBalance(List<Transaction> allTransactions) {
+        List<String> linesWithBalance = new ArrayList<>();
         int rollingBalance = 0;
         for (Transaction t : allTransactions) {
             rollingBalance += t.getAmount();
-            temp.add(t.getDate() + " || " + t.getAmount() + " || " + rollingBalance);
+            linesWithBalance.add(t.getDate() + " || " + t.getAmount() + " || " + rollingBalance);
         }
-
-        console.println("Date || Amount || Balance");
-
-        Collections.reverse(temp);
-        for (String line : temp) {
-            console.println(line);
-        }
+        return linesWithBalance;
     }
 }
