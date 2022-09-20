@@ -1,8 +1,8 @@
 package com.bankoutsidein;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -15,17 +15,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AccountServiceShould {
 
-    AccountService accountService;
-    @Mock TransactionRepository transactionRepository;
+    @InjectMocks
+    private AccountService accountService;
+
+    @Mock private TransactionRepository transactionRepository;
 
     @Mock private StatementPrinter statementPrinter;
 
     @Mock private ClockService clockService;
-
-    @BeforeEach
-    public void initialise() {
-        accountService = new AccountService(transactionRepository, statementPrinter, clockService);
-    }
 
     @Test
     void deposit() {

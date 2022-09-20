@@ -1,9 +1,9 @@
 package com.bankoutsidein;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -14,14 +14,10 @@ import static org.mockito.Mockito.inOrder;
 
 @ExtendWith(MockitoExtension.class)
 class StatementPrinterShould {
-    StatementPrinter statementPrinter;
+    @InjectMocks
+    private StatementPrinter statementPrinter;
     @Mock
-    Console console;
-
-    @BeforeEach
-    void initialise() {
-        this.statementPrinter = new StatementPrinter(console);
-    }
+    private Console console;
 
     @Test
     void printAllJustHeader() {

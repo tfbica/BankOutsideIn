@@ -1,7 +1,5 @@
 package com.bankoutsidein;
 
-import java.util.List;
-
 public class AccountService {
     private final TransactionRepository transactionRepository;
 
@@ -18,18 +16,21 @@ public class AccountService {
     }
 
     public void deposit(int amount) {
-        transactionRepository.add(new Transaction(clockService.getCurrentDate(), amount));
+        createTransaction(amount);
 
     }
 
     public void withdraw(int amount) {
-        transactionRepository.add(new Transaction(clockService.getCurrentDate(), -amount));
+        createTransaction(-amount);
+    }
+
+    private void createTransaction(int amount) {
+        transactionRepository.add(new Transaction(clockService.getCurrentDate(), amount));
     }
 
     public void printStatement() {
 
-        List<Transaction> transactions = transactionRepository.getTransactions();
-        statementPrinter.printAll(transactions);
+        statementPrinter.printAll(transactionRepository.getTransactions());
 
     }
 }

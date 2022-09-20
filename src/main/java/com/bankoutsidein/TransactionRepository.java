@@ -8,9 +8,6 @@ public class TransactionRepository {
 
     private final List<Transaction> transactions = new ArrayList<>();
 
-    public TransactionRepository() {
-    }
-
     public void add(Transaction transaction) {
         transactions.add(transaction);
     }

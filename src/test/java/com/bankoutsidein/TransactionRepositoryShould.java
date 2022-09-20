@@ -1,22 +1,15 @@
 package com.bankoutsidein;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionRepositoryShould {
 
-    private TransactionRepository transactionRepository;
-
-    @BeforeEach
-    void initialise() {
-        this.transactionRepository = new TransactionRepository();
-    }
+    private final TransactionRepository transactionRepository = new TransactionRepository();
 
     @Test
     void addDeposit() {
@@ -29,10 +22,7 @@ class TransactionRepositoryShould {
         transactionRepository.add(new Transaction(expectedDate, amount));
 
         // assert
-        assertEquals(1, transactionRepository.getTransactions().size());
-        Transaction transaction = transactionRepository.getTransactions().get(0);
-        assertEquals(amount, transaction.getAmount());
-        assertEquals(expectedDate, transaction.getDate());
+        assertTransactionCreated(amount, expectedDate);
     }
 
     @Test
@@ -46,9 +36,13 @@ class TransactionRepositoryShould {
         transactionRepository.add(new Transaction(expectedDate, -amount));
 
         // assert
+        assertTransactionCreated(-amount, expectedDate);
+    }
+
+    private void assertTransactionCreated(int amount, String expectedDate) {
         assertEquals(1, transactionRepository.getTransactions().size());
         Transaction transaction = transactionRepository.getTransactions().get(0);
-        assertEquals(-amount, transaction.getAmount());
+        assertEquals(amount, transaction.getAmount());
         assertEquals(expectedDate, transaction.getDate());
     }
 }
