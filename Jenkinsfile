@@ -1,6 +1,6 @@
 /* Requires the Docker Pipeline plugin */
 pipeline {
-    agent { docker { image 'gradle:8.0.2-jdk11-alpine' } }
+    agent { docker { image 'gradle:8.0.2-jdk-alpine' } }
     stages {
         stage('build') {
             steps {
